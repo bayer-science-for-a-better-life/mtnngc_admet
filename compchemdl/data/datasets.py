@@ -56,6 +56,9 @@ def load_training_data(dataset_files, split_field='Fold', smiles_field='Smiles',
 
     if cv:
         folds = np.unique(df_trains[0][split_field].tolist())
+        deepchem_molids = dataset.ids  # those compounds that we can find in the DeepChem DiskDataset
+        df_train = df_train.set_index(id_field)
+        df_train = df_train.reindex(deepchem_molids).reset_index()  # now the dataframe and the DC datasets are aligned
 
         # Separate in folds
         folds_datasets = []
